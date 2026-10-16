@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Demo</title>
+    <title>Market Analysis Tool</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 30px; }
         .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: purple; }
@@ -13,6 +13,8 @@
         #stats-display { font-size: 18px; margin-top: 20px; color: #555; }
         .win-btn { background-color: green; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         .loss-btn { background-color: red; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
+        #risk-mgmt { font-size: 16px; margin-top: 30px; color: #d9534f; font-weight: bold; }
+        #total-wins { font-size: 18px; margin-top: 20px; color: #333; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -21,9 +23,38 @@
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
-        <!-- Add your currency pairs here -->
-        <option value="USD/PHP">USD/PHP (OTC)</option>
-        <!-- Add other options -->
+        <optgroup label="USD Pairs">
+            <option value="USD/PHP">USD/PHP (OTC)</option>
+            <option value="USD/BDT">USD/BDT (OTC)</option>
+            <option value="USD/MXN">USD/MXN (OTC)</option>
+            <option value="USD/EGP">USD/EGP (OTC)</option>
+            <option value="USD/BRL">USD/BRL (OTC)</option>
+            <option value="USD/DZD">USD/DZD (OTC)</option>
+            <option value="USD/NGN">USD/NGN (OTC)</option>
+            <option value="USD/IDR">USD/IDR (OTC)</option>
+            <option value="USD/PKR">USD/PKR (OTC)</option>
+            <option value="USD/COP">USD/COP (OTC)</option>
+            <option value="USD/INR">USD/INR (OTC)</option>
+        </optgroup>
+        <optgroup label="Other Pairs">
+            <option value="NZD/JPY">NZD/JPY (OTC)</option>
+            <option value="NZD/USD">NZD/USD (OTC)</option>
+            <option value="AUD/CAD">AUD/CAD</option>
+            <option value="GBP/NZD">GBP/NZD (OTC)</option>
+            <option value="EUR/NZD">EUR/NZD (OTC)</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="NZD/CHF">NZD/CHF (OTC)</option>
+            <option value="EUR/CAD">EUR/CAD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+            <option value="NZD/CAD">NZD/CAD (OTC)</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="AUD/CHF">AUD/CHF</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="EUR/USD">EUR/USD</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+        </optgroup>
     </select>
     <br>
     
@@ -36,9 +67,14 @@
     </div>
     
     <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
+    
+    <div id="total-wins">Total Wins out of 100 Trades: 0</div>
+    
+    <div id="risk-mgmt">Trade with proper risk management. Always maintain a 1% to 3% risk per trade.</div>
 
     <script>
         let tradeHistory = [];
+        let totalWinsCount = 0;
 
         function updateIndianTime() {
             const now = new Date();
@@ -61,10 +97,14 @@
 
         function recordTrade(result) {
             tradeHistory.push(result);
+            if (result === 'WIN') {
+                totalWinsCount++;
+            }
             if (tradeHistory.length > 10) {
                 tradeHistory.shift();
             }
             updateStats();
+            document.getElementById('total-wins').innerText = 'Total Wins out of 100 Trades: ' + totalWinsCount;
         }
 
         function updateStats() {
@@ -77,3 +117,4 @@
     </script>
 </body>
 </html>
+
