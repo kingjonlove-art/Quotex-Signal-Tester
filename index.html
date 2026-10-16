@@ -15,6 +15,7 @@
         #stats-display { font-size: 18px; margin-top: 20px; color: #555; }
         .win-btn { background-color: green; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         .loss-btn { background-color: red; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
+        .reset-btn { background-color: #f0ad4e; color: white; padding: 10px 20px; border: none; margin-top: 20px; cursor: pointer; }
         #risk-mgmt { font-size: 16px; margin-top: 30px; color: #d9534f; font-weight: bold; }
         #total-wins { font-size: 18px; margin-top: 20px; color: #333; font-weight: bold; }
     </style>
@@ -25,7 +26,7 @@
     <div id="countdown">Next Signal in: --s</div>
     
     <label for="pair-select">Select Trade Pair:</label>
-    <select id="pair-select" onchange="updateLive Price()">
+    <select id="pair-select" onchange="updateLivePrice()">
         <optgroup label="USD Pairs">
             <option value="USD/PHP">USD/PHP (OTC)</option>
             <option value="USD/BDT">USD/BDT (OTC)</option>
@@ -72,6 +73,8 @@
     
     <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
     
+    <button class="reset-btn" onclick="resetStats()">Reset Stats</button>
+    
     <div id="total-wins">Total Wins out of 100 Trades: 0</div>
     
     <div id="risk-mgmt">Trade with proper risk management. Always maintain a 1% to 3% risk per trade.</div>
@@ -94,14 +97,14 @@
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
 
-        function updateLive Price() {
+        function updateLivePrice() {
             const pair = document.getElementById('pair-select').value;
             const simulatedPrice = (Math.random() * 1.5).toFixed(4);
             document.getElementById('live-price').innerText = 'Live Price for ' + pair + ': ' + simulatedPrice;
         }
 
-        setInterval(updateLive Price, 3000);
-        updateLive Price();
+        setInterval(updateLivePrice, 3000);
+        updateLivePrice();
 
         function analyzeMarket() {
             const pair = document.getElementById('pair-select').value;
@@ -129,7 +132,14 @@
             const wins = tradeHistory.filter(r => r === 'WIN').length;
             const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
             const statsDisplay = document.getElementById('stats-display');
-            statsDisplay.innerText = 'Trades: ' + total + ' | Wins: ' + wins + ' | Win Rate: ' + winRate + '%';
+            statsDisplay.innerText = 'Trades: ' + total + ' | Wins: ' + wins | Win Rate: ' + winRate + '%';
+        }
+
+        function resetStats() {
+            tradeHistory = [];
+            totalWinsCount = 0;
+            updateStats();
+            document.getElementById('total-wins').innerText = 'Total Wins out of 100 Trades: ' + totalWinsCount;
         }
     </script>
 </body>
