@@ -124,7 +124,8 @@
             }, 1000);
 
             const [fromCurrency, toCurrency] = pair.split('/');
-            const apiUrl = https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${API_KEY};
+            const apiUrl = const [fromCurrency, toCurrency] = pair.split('/');
+            const apiUrl = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${API_KEY}`;
 
             try {
                 const response = await fetch(apiUrl);
@@ -132,7 +133,7 @@
 
                 if (data["Realtime Currency Exchange Rate"]) {
                     const exchangeRate = parseFloat(data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-                    priceDisplay.innerText = Live Price (${pair}): ${exchangeRate};
+                    priceDisplay.innerText = `Live Price (${pair}): ${exchangeRate}`;
 
                     const signals = ['UP', 'DOWN'];
                     const calculatedSignal = signals[Math.floor(Math.random() * signals.length)];
@@ -148,7 +149,7 @@
                 }
             } catch (error) {
                 console.error("API Fetch Error:", error);
-                priceDisplay.innerText = 'Live Price: Error fetching data';
+                priceDisplay.innerText = 'Live Price: Error';
                 const signals = ['UP', 'DOWN'];
                 const randomSignal = signals[Math.floor(Math.random() * signals.length)];
                 display.innerText = '1m Signal for ' + pair + ': ' + randomSignal;
