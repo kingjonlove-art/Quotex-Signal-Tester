@@ -22,7 +22,7 @@
 </head>
 <body>
     <h1>Market Analysis Tool</h1>
-    <div id="timer">Loading UTC Time...</div>
+    <div id="timer">Loading Indian Time...</div>
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
@@ -82,14 +82,15 @@
     <script>
         let tradeHistory = [];
         let totalWinsCount = 0;
+        let countdownInterval = null;
 
         const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
 
         function updateIndianTime() {
             const now = new Date();
-            const options = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const utcTime = new Intl.DateTimeFormat('en-US', options).format(now);
-            document.getElementById('timer').innerText = 'UTC Time: ' + utcTime;
+            const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const indianTime = new Intl.DateTimeFormat('en-IN', options).format(now);
+            document.getElementById('timer').innerText = 'Indian Time: ' + indianTime;
         }
 
         setInterval(updateIndianTime, 1000);
@@ -101,22 +102,24 @@
             
             analyzeMarket();
 
+            if (countdownInterval) clearInterval(countdownInterval);
+
             const updateCountdown = () => {
                 const now = new Date();
-                const secondsPassed = now.getUTCSeconds();
+                const secondsPassed = parseInt(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', second: 'numeric' }).format(now));
                 const timeLeft = 60 - secondsPassed;
 
                 if (timeLeft > 0 && timeLeft < 60) {
                     btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
                 } else {
-                    clearInterval(countdown);
+                    clearInterval(countdownInterval);
                     btn.disabled = false;
                     btn.innerText = 'ANALYZE 1M SIGNAL';
                 }
             };
 
             updateCountdown();
-            const countdown = setInterval(updateCountdown, 1000);
+            countdownInterval = setInterval(updateCountdown, 1000);
         }
 
         async function analyzeMarket() {
