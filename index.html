@@ -7,6 +7,7 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 30px; }
         .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: purple; }
+        .btn:disabled { background-color: #888; cursor: not-allowed; }
         #timer { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333; }
         #pair-select { font-size: 18px; padding: 8px; margin-bottom: 15px; }
         #signal-display { font-size: 24px; font-weight: bold; margin-top: 20px; }
@@ -60,7 +61,7 @@
     </select>
     <br>
     
-    <button class="btn" onclick="analyzeMarket()">ANALYZE 1M SIGNAL</button>
+    <button id="analyze-btn" class="btn" onclick="startAnalysisTimer()">ANALYZE 1M SIGNAL</button>
     
     <div id="price-display">Live Price: --</div>
     <div id="signal-display"></div>
@@ -93,6 +94,27 @@
 
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
+
+        function startAnalysisTimer() {
+            const btn = document.getElementById('analyze-btn');
+            btn.disabled = true;
+            
+            analyzeMarket();
+
+            let timeLeft = 60;
+            btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
+                } else {
+                    clearInterval(countdown);
+                    btn.disabled = false;
+                    btn.innerText = 'ANALYZE 1M SIGNAL';
+                }
+            }, 1000);
+        }
 
         async function analyzeMarket() {
             const pair = document.getElementById('pair-select').value;
