@@ -3,24 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Demo</title>
+    <title>Indian Timer & Signal Setup</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
         .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: purple; }
+        #timer { font-size: 20px; font-weight: bold; margin-bottom: 20px; color: #333; }
         #signal-display { font-size: 28px; font-weight: bold; margin-top: 30px; }
     </style>
 </head>
 <body>
     <h1>Market Analysis Tool</h1>
-    <button class="btn" onclick="analyzeMarket()">ANALYZE MARKET</button>
+    <div id="timer">Loading Indian Time...</div>
+    <button class="btn" onclick="analyzeMarket()">ANALYZE 1M SIGNAL</button>
     <div id="signal-display"></div>
 
     <script>
+        function updateIndianTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const indianTime = new Intl.DateTimeFormat('en-IN', options).format(now);
+            document.getElementById('timer').innerText = 'Indian Time: ' + indianTime;
+        }
+
+        setInterval(updateIndianTime, 1000);
+        updateIndianTime();
+
         function analyzeMarket() {
             const signals = ['UP', 'DOWN'];
             const randomSignal = signals[Math.floor(Math.random() * signals.length)];
             const display = document.getElementById('signal-display');
-            display.innerText = 'Signal: ' + randomSignal;
+            display.innerText = '1m Signal: ' + randomSignal;
             display.style.color = randomSignal === 'UP' ? 'green' : 'red';
         }
     </script>
