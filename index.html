@@ -22,7 +22,7 @@
 </head>
 <body>
     <h1>Market Analysis Tool</h1>
-    <div id="timer">Loading Indian Time...</div>
+    <div id="timer">Loading UTC Time...</div>
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
@@ -87,9 +87,9 @@
 
         function updateIndianTime() {
             const now = new Date();
-            const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const indianTime = new Intl.DateTimeFormat('en-IN', options).format(now);
-            document.getElementById('timer').innerText = 'Indian Time: ' + indianTime;
+            const options = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const utcTime = new Intl.DateTimeFormat('en-US', options).format(now);
+            document.getElementById('timer').innerText = 'UTC Time: ' + utcTime;
         }
 
         setInterval(updateIndianTime, 1000);
@@ -101,19 +101,22 @@
             
             analyzeMarket();
 
-            let timeLeft = 60;
-            btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
+            const updateCountdown = () => {
+                const now = new Date();
+                const secondsPassed = now.getUTCSeconds();
+                const timeLeft = 60 - secondsPassed;
 
-            const countdown = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
+                if (timeLeft > 0 && timeLeft < 60) {
                     btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
                 } else {
                     clearInterval(countdown);
                     btn.disabled = false;
                     btn.innerText = 'ANALYZE 1M SIGNAL';
                 }
-            }, 1000);
+            };
+
+            updateCountdown();
+            const countdown = setInterval(updateCountdown, 1000);
         }
 
         async function analyzeMarket() {
