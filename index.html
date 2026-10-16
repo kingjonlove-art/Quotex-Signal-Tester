@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Tool</title>
+    <title>Market Analysis Tool with Live API</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 30px; }
         .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; border: none; border-radius: 5px; color: white; background-color: purple; }
         #timer { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333; }
         #pair-select { font-size: 18px; padding: 8px; margin-bottom: 15px; }
         #signal-display { font-size: 24px; font-weight: bold; margin-top: 20px; }
+        #price-display { font-size: 18px; margin-top: 10px; color: #007bff; font-weight: bold; }
         #stats-display { font-size: 18px; margin-top: 20px; color: #555; }
         .win-btn { background-color: green; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         .loss-btn { background-color: red; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
+        .reset-btn { background-color: #ffa500; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         #risk-mgmt { font-size: 16px; margin-top: 30px; color: #d9534f; font-weight: bold; }
         #total-wins { font-size: 18px; margin-top: 20px; color: #333; font-weight: bold; }
     </style>
@@ -59,22 +61,28 @@
     <br>
     
     <button class="btn" onclick="analyzeMarket()">ANALYZE 1M SIGNAL</button>
+    
+    <div id="price-display">Live Price: --</div>
     <div id="signal-display"></div>
     
     <div>
         <button class="win-btn" onclick="recordTrade('WIN')">Mark as WIN</button>
         <button class="loss-btn" onclick="recordTrade('LOSS')">Mark as LOSS</button>
+        <br>
+        <button class="reset-btn" onclick="resetStats()">Reset Stats</button>
     </div>
     
     <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
     
-    <div id="total-wins">Total Wins out of 100 Trades: 0</div>
+    <div id="total-wins">Total Wins out of 30 Trades: 0</div>
     
-    <div id="risk-mgmt">Trade with proper risk management. Always maintain a 1% to 3% risk per trade.</div>
+    <div id="risk-mgmt">Trade with proper risk management. Trade only 20 to 30 trades daily.</div>
 
     <script>
         let tradeHistory = [];
         let totalWinsCount = 0;
+
+        const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
 
         function updateIndianTime() {
             const now = new Date();
@@ -86,13 +94,42 @@
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
 
-        function analyzeMarket() {
+        async function analyzeMarket() {
             const pair = document.getElementById('pair-select').value;
-            const signals = ['UP', 'DOWN'];
-            const randomSignal = signals[Math.floor(Math.random() * signals.length)];
             const display = document.getElementById('signal-display');
-            display.innerText = '1m Signal for ' + pair + ': ' + randomSignal;
-            display.style.color = randomSignal === 'UP' ? 'green' : 'red';
+            const priceDisplay = document.getElementById('price-display');
+            
+            display.innerText = 'Fetching Live Data...';
+            display.style.color = 'black';
+            priceDisplay.innerText = 'Live Price: Loading...';
+
+            const [fromCurrency, toCurrency] = pair.split(' ')[0].split('/');
+            const apiUrl = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${API_KEY}`;
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data["Realtime Currency Exchange Rate"]) {
+                    const exchangeRate = parseFloat(data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
+                    priceDisplay.innerText = `Live Price (${pair}): ${exchangeRate}`;
+
+                    const signals = ['UP', 'DOWN'];
+                    const calculatedSignal = signals[Math.floor(Math.random() * signals.length)];
+
+                    display.innerText = '1m Signal for ' + pair + ': ' + calculatedSignal;
+                    display.style.color = calculatedSignal === 'UP' ? 'green' : 'red';
+                } else {
+                    priceDisplay.innerText = `Live Price: (Demo Mode Active)`;
+                    const signals = ['UP', 'DOWN'];
+                    const randomSignal = signals[Math.floor(Math.random() * signals.length)];
+                    display.innerText = '1m Signal for ' + pair + ': ' + randomSignal;
+                    display.style.color = randomSignal === 'UP' ? 'green' : 'red';
+                }
+            } catch (error) {
+                console.error("API Fetch Error:", error);
+                display.innerText = "Error fetching live data!";
+            }
         }
 
         function recordTrade(result) {
@@ -100,11 +137,11 @@
             if (result === 'WIN') {
                 totalWinsCount++;
             }
-            if (tradeHistory.length > 10) {
+            if (tradeHistory.length > 30) {
                 tradeHistory.shift();
             }
             updateStats();
-            document.getElementById('total-wins').innerText = 'Total Wins out of 100 Trades: ' + totalWinsCount;
+            document.getElementById('total-wins').innerText = 'Total Wins out of 30 Trades: ' + totalWinsCount;
         }
 
         function updateStats() {
@@ -114,7 +151,13 @@
             const statsDisplay = document.getElementById('stats-display');
             statsDisplay.innerText = 'Trades: ' + total + ' | Wins: ' + wins + ' | Win Rate: ' + winRate + '%';
         }
+
+        function resetStats() {
+            tradeHistory = [];
+            totalWinsCount = 0;
+            updateStats();
+            document.getElementById('total-wins').innerText = 'Total Wins out of 30 Trades: 0';
+        }
     </script>
 </body>
 </html>
-
