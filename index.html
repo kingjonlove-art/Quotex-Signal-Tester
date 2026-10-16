@@ -10,23 +10,22 @@
         #timer { font-size: 20px; font-weight: bold; margin-bottom: 15px; color: #333; }
         #countdown { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #007bff; }
         #pair-select { font-size: 18px; padding: 8px; margin-bottom: 15px; }
+        #live-price { font-size: 20px; font-weight: bold; color: #333; }
         #signal-display { font-size: 24px; font-weight: bold; margin-top: 20px; }
         #stats-display { font-size: 18px; margin-top: 20px; color: #555; }
         .win-btn { background-color: green; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         .loss-btn { background-color: red; color: white; padding: 10px 20px; border: none; margin-top: 10px; cursor: pointer; }
         #risk-mgmt { font-size: 16px; margin-top: 30px; color: #d9534f; font-weight: bold; }
         #total-wins { font-size: 18px; margin-top: 20px; color: #333; font-weight: bold; }
-        #mode-status { font-size: 18px; margin-top: 15px; color: #007bff; font-weight: bold; }
     </style>
 </head>
 <body>
     <h1>Market Analysis Tool</h1>
-    <div id="mode-status">Demo mode off, only live mode</div>
     <div id="timer">Loading Indian Time...</div>
     <div id="countdown">Next Signal in: --s</div>
     
     <label for="pair-select">Select Trade Pair:</label>
-    <select id="pair-select">
+    <select id="pair-select" onchange="updateLive Price()">
         <optgroup label="USD Pairs">
             <option value="USD/PHP">USD/PHP (OTC)</option>
             <option value="USD/BDT">USD/BDT (OTC)</option>
@@ -61,6 +60,7 @@
         </optgroup>
     </select>
     <br>
+    <div id="live-price">Live Price: Loading...</div>
     
     <button class="btn" onclick="analyzeMarket()">ANALYZE 1M SIGNAL</button>
     <div id="signal-display"></div>
@@ -93,6 +93,15 @@
 
         setInterval(updateIndianTime, 1000);
         updateIndianTime();
+
+        function updateLive Price() {
+            const pair = document.getElementById('pair-select').value;
+            const simulatedPrice = (Math.random() * 1.5).toFixed(4);
+            document.getElementById('live-price').innerText = 'Live Price for ' + pair + ': ' + simulatedPrice;
+        }
+
+        setInterval(updateLive Price, 3000);
+        updateLive Price();
 
         function analyzeMarket() {
             const pair = document.getElementById('pair-select').value;
