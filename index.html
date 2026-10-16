@@ -1,56 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-shead>
-<meta charset="UTF-8">
-<meta name="viewport” content="width=device-width, initial-scale=1.0"
-<title>Quotex Signal Tester</title>
-1. HTML Head
-(Meta + Title + Style Start)
-<style>
-*( box-sizing:border-box;)
-}p0q
-margin：0;
-padding: 20px;
-font-family:Arial, sans-serif;backaround：#0f172a;
-color： white;
-2.CSS Styling
-(Design & Colors)
-.container（
-max-width: 450px；margin:40px auto;padding: 25px；
-background：#1e293b;border-radius: 16px;text-align:center;
-h1 f font-size:25px； color：#38bdf8；)
-.subtitle f color: #cbd5e1；)
-hutton (
-width: 100%；
-padding: 15px;
-margin-top: 12px;border: none;
-border-radius:9px;
-font-size: 18px;font-weight:bold;color: white:
-cursor: pointer;
-.bullish f background：#16a34a；)
-.bearish ( background:#dc2626；)
-#signal ( margin-top：25px； font-size:26px；font-weight:bold;)
-#message f color:#cbd5el；font-size；14px;； line-height: 1.6；)
-</style>
-/head>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotex Signal Tester</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .btn { padding: 10px 20px; font-size: 16px; margin: 10px; cursor: pointer; }
+        .btn-bullish { background-color: green; color: white; }
+        .btn-bearish { background-color: red; color: white; }
+        #signal-display { font-size: 24px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
 <body>
-<diy classa"container">
-ch1>Quotex Signal Testers/h1>
-3. HTML Body
-(Buttons & Signal Area)
-<p class="subtitle">Trading Signal Demos/p>
-<button classa"bullish” onclick="showSignal('BULLISH')">BULLISH</button>shutton class="bearish" onclick="showSigna1('BEARISH')">BEARISH</button><div id="signal">WAITING FOR SIGNAL</div>
-<p ida"message" sManual demo only. No live market analysis.</p>
-</div>
-<script>
-function showSignal(type)（
-const signal a document.getElementById("signal");const message a document.getElementbyId("message'if (type ==='BULLISH')（
-signal.textContent='BULLISH t";
-4. JavaScript
-signal.style.color = “#4ade80";(Button Click Function)
-signal.textContent =“BEARISH L";
-signal.style.color =“4f87171";
-message.textContent "Demo signal'selected manually. Not a trading prediction.",
-</script>
-/body>
-1</html>
+    <h1>Quotex Signal Tester</h1>
+    <button class="btn btn-bullish" onclick="showSignal('BULLISH')">BULLISH</button>
+    <button class="btn btn-bearish" onclick="showSignal('BEARISH')">BEARISH</button>
+    <div id="signal-display"></div>
+
+    <script>
+        function showSignal(signal) {
+            document.getElementById('signal-display').innerText = 'Signal: ' + signal;
+        }
+    </script>
+</body>
+</html>
