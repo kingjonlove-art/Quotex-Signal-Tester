@@ -43,10 +43,10 @@
             background-color: #888888; 
             cursor: not-allowed; 
         }
-        #india-timer, #bangladesh-timer { 
+        #zone-timer { 
             font-size: 16px; 
             font-weight: bold; 
-            margin-bottom: 5px; 
+            margin-bottom: 20px; 
             color: #E0E0E0; 
         }
         #timezone-select, #pair-select { 
@@ -161,9 +161,6 @@
 <body>
     <h1>Professional Market Analysis Tool</h1>
     
-    <div id="india-timer">Loading Indian Time...</div>
-    <div id="bangladesh-timer">Loading Bangladesh Time...</div>
-    
     <label for="timezone-select">Select Time Zone:</label>
     <select id="timezone-select" onchange="updateTimes()">
         <option value="Asia/Kolkata">IST (India)</option>
@@ -174,6 +171,8 @@
         <option value="Europe/London">GMT (London)</option>
         <option value="Asia/Tokyo">JST (Tokyo)</option>
     </select>
+    
+    <div id="zone-timer">Loading Time...</div>
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
@@ -242,14 +241,16 @@
 
         function updateTimes() {
             const now = new Date();
+            const selectedZone = document.getElementById('timezone-select').value;
             
-            const indiaOptions = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const indiaTime = new Intl.DateTimeFormat('en-IN', indiaOptions).format(now);
-            document.getElementById('india-timer').innerText = 'Indian Time: ' + indiaTime;
+            const zoneOptions = { timeZone: selectedZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const zoneTime = new Intl.DateTimeFormat('en-GB', zoneOptions).format(now);
             
-            const bangladeshOptions = { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const bangladeshTime = new Intl.DateTimeFormat('en-BD', bangladeshOptions).format(now);
-            document.getElementById('bangladesh-timer').innerText = 'Bangladesh Time: ' + bangladeshTime;
+            let zoneDisplayName = selectedZone.split('/')[1] || selectedZone;
+            if (selectedZone === 'Asia/Kolkata') zoneDisplayName = 'IST (India)';
+            if (selectedZone === 'Asia/Dhaka') zoneDisplayName = 'BST (Bangladesh)';
+            
+            document.getElementById('zone-timer').innerText = zoneDisplayName + ' Time: ' + zoneTime;
         }
 
         setInterval(updateTimes, 1000);
@@ -258,7 +259,6 @@
         function startAnalysisTimer() {
             const btn = document.getElementById('analyze-btn');
             btn.disabled = true;
-            
             analyzeMarket();
 
             if (countdownInterval) clearInterval(countdownInterval);
