@@ -260,7 +260,7 @@
             const wins = tradeHistory.filter(r => r === 'WIN').length;
             const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
             const statsDisplay = document.getElementById('stats-display');
-            statsDisplay.innerText = 'Trades: ' + total + ' | Wins: ' + wins | Win Rate: ' + winRate + '%';
+            statsDisplay.innerText = 'Trades: ' + total + ' | Wins: ' + wins + ' | Win Rate: ' + winRate + '%';
         }
 
         function resetStats() {
