@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Tool with Live API</title>
+    <title>Market Analysis Tool with Quotex Links</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -82,6 +82,17 @@
             cursor: pointer; 
             border-radius: 3px;
         }
+        .quotex-btn { 
+            background-color: #0984E3; 
+            color: #FFFFFF; 
+            padding: 15px 30px; 
+            border: none; 
+            margin-top: 20px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-size: 18px; 
+            font-weight: bold;
+        }
         #risk-mgmt { 
             font-size: 16px; 
             margin-top: 30px; 
@@ -108,36 +119,30 @@
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
-        <optgroup label="USD Pairs">
-            <option value="USD/PHP">USD/PHP (OTC)</option>
-            <option value="USD/BDT">USD/BDT (OTC)</option>
-            <option value="USD/MXN">USD/MXN (OTC)</option>
-            <option value="USD/EGP">USD/EGP (OTC)</option>
-            <option value="USD/BRL">USD/BRL (OTC)</option>
-            <option value="USD/DZD">USD/DZD (OTC)</option>
+        <optgroup label="USD Pairs (Quotex)">
+            <option value="EUR/USD">EUR/USD (OTC)</option>
+            <option value="USD/JPY">USD/JPY (OTC)</option>
+            <option value="GBP/USD">GBP/USD (OTC)</option>
+            <option value="AUD/USD">AUD/USD (OTC)</option>
+            <option value="USD/CAD">USD/CAD (OTC)</option>
+            <option value="USD/CHF">USD/CHF (OTC)</option>
+            <option value="NZD/USD">NZD/USD (OTC)</option>
             <option value="USD/NGN">USD/NGN (OTC)</option>
-            <option value="USD/IDR">USD/IDR (OTC)</option>
-            <option value="USD/PKR">USD/PKR (OTC)</option>
-            <option value="USD/COP">USD/COP (OTC)</option>
             <option value="USD/INR">USD/INR (OTC)</option>
         </optgroup>
         <optgroup label="Other Pairs">
             <option value="NZD/JPY">NZD/JPY (OTC)</option>
-            <option value="NZD/USD">NZD/USD (OTC)</option>
             <option value="AUD/CAD">AUD/CAD</option>
             <option value="GBP/NZD">GBP/NZD (OTC)</option>
             <option value="EUR/NZD">EUR/NZD (OTC)</option>
-            <option value="GBP/USD">GBP/USD</option>
             <option value="NZD/CHF">NZD/CHF (OTC)</option>
             <option value="EUR/CAD">EUR/CAD</option>
             <option value="GBP/AUD">GBP/AUD</option>
             <option value="NZD/CAD">NZD/CAD (OTC)</option>
             <option value="EUR/JPY">EUR/JPY</option>
-            <option value="AUD/USD">AUD/USD</option>
             <option value="EUR/GBP">EUR/GBP</option>
             <option value="AUD/CHF">AUD/CHF</option>
             <option value="AUD/JPY">AUD/JPY</option>
-            <option value="EUR/USD">EUR/USD</option>
             <option value="CAD/JPY">CAD/JPY</option>
         </optgroup>
     </select>
@@ -158,6 +163,10 @@
     <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
     
     <div id="total-wins">Total Wins out of 30 Trades: 0</div>
+    
+    <div>
+        <button class="quotex-btn" onclick="window.open('https://quotex.io', '_blank')">Go to Quotex</button>
+    </div>
     
     <div id="risk-mgmt">Risk Management: Always use 1% to 3% of your capital per trade.</div>
     <div id="demo-warning">Warning: If Demo Mode is On, do not trade.</div>
@@ -214,7 +223,7 @@
             display.style.color = '#FFFFFF';
             priceDisplay.innerText = 'Live Price: Loading...';
 
-            const [fromCurrency, toCurrency] = pair.split(' ')[0].split('/');
+            const [fromCurrency, toCurrency] = pair.split('/');
             const apiUrl = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${API_KEY}`;
 
             try {
