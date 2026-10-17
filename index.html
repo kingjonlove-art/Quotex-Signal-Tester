@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Tool with Quotex Links</title>
+    <title>Market Analysis Tool</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -82,17 +82,6 @@
             cursor: pointer; 
             border-radius: 3px;
         }
-        .quotex-btn { 
-            background-color: #0984E3; 
-            color: #FFFFFF; 
-            padding: 15px 30px; 
-            border: none; 
-            margin-top: 20px; 
-            cursor: pointer; 
-            border-radius: 5px; 
-            font-size: 18px; 
-            font-weight: bold;
-        }
         #risk-mgmt { 
             font-size: 16px; 
             margin-top: 30px; 
@@ -119,7 +108,7 @@
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
-        <optgroup label="USD Pairs (Quotex)">
+        <optgroup label="USD Pairs">
             <option value="EUR/USD">EUR/USD (OTC)</option>
             <option value="USD/JPY">USD/JPY (OTC)</option>
             <option value="GBP/USD">GBP/USD (OTC)</option>
@@ -164,12 +153,8 @@
     
     <div id="total-wins">Total Wins out of 30 Trades: 0</div>
     
-    <div>
-        <button class="quotex-btn" onclick="window.open('https://quotex.io', '_blank')">Go to Quotex</button>
-    </div>
-    
     <div id="risk-mgmt">Risk Management: Always use 1% to 3% of your capital per trade.</div>
-    <div id="demo-warning">Warning: If Demo Mode is On, do not trade.</div>
+    <div id="demo-warning">Warning: If Live Price shows Demo Mode Active, trading is prohibited.</div>
 
     <script>
         let tradeHistory = [];
