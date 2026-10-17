@@ -269,7 +269,7 @@
                 const timeLeft = 60 - secondsPassed;
 
                 if (timeLeft > 0 && timeLeft < 60) {
-                    btn.innerText = \`PLEASE WAIT (\${timeLeft}s)\`;
+                    btn.innerText = `PLEASE WAIT (${timeLeft}s)`;
                 } else {
                     clearInterval(countdownInterval);
                     btn.disabled = false;
@@ -291,7 +291,7 @@
             priceDisplay.innerText = 'Live Price: Loading...';
 
             const [fromCurrency, toCurrency] = pair.split('/');
-            const apiUrl = \`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=\${fromCurrency}&to_currency=\${toCurrency}&apikey=\${API_KEY}\`;
+            const apiUrl = `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${API_KEY}`;
 
             try {
                 const response = await fetch(apiUrl);
@@ -299,7 +299,7 @@
 
                 if (data["Realtime Currency Exchange Rate"]) {
                     const exchangeRate = parseFloat(data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]);
-                    priceDisplay.innerText = \`Live Price (\${pair}): \${exchangeRate}\`;
+                    priceDisplay.innerText = `Live Price (${pair}): ${exchangeRate}`;
 
                     const signals = ['UP', 'DOWN'];
                     const calculatedSignal = signals[Math.floor(Math.random() * signals.length)];
@@ -307,7 +307,7 @@
                     display.innerText = '1m Signal for ' + pair + ': ' + calculatedSignal;
                     display.style.color = calculatedSignal === 'UP' ? '#00B894' : '#D63031';
                 } else {
-                    priceDisplay.innerText = \`Live Price: (Demo Mode Active)\`;
+                    priceDisplay.innerText = `Live Price: (Demo Mode Active)`;
                     const signals = ['UP', 'DOWN'];
                     const randomSignal = signals[Math.floor(Math.random() * signals.length)];
                     display.innerText = '1m Signal for ' + pair + ': ' + randomSignal;
