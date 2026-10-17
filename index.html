@@ -6,7 +6,7 @@
     <title>Professional Market Analysis Tool</title>
     <style>
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: Arial, sans-serif; 
             text-align: center; 
             margin: 0; 
             padding: 20px; 
@@ -43,21 +43,15 @@
             background-color: #888888; 
             cursor: not-allowed; 
         }
-        #timer { 
-            font-size: 20px; 
+        #india-timer, #bangladesh-timer { 
+            font-size: 16px; 
             font-weight: bold; 
             margin-bottom: 5px; 
             color: #E0E0E0; 
         }
-        #zone-timer { 
-            font-size: 16px; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            color: #B2BEC3; 
-        }
         #timezone-select, #pair-select { 
-            font-size: 18px; 
-            padding: 10px; 
+            font-size: 16px; 
+            padding: 8px; 
             margin-bottom: 20px; 
             background-color: #2D2D2D; 
             color: #FFFFFF; 
@@ -76,14 +70,14 @@
             font-weight: bold; 
         }
         #stats-display { 
-            font-size: 18px; 
+            font-size: 16px; 
             margin-top: 20px; 
             color: #B2BEC3; 
         }
         .win-btn { 
             background-color: #00B894; 
             color: #FFFFFF; 
-            padding: 12px 24px; 
+            padding: 10px 20px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
@@ -92,7 +86,7 @@
         .loss-btn { 
             background-color: #D63031; 
             color: #FFFFFF; 
-            padding: 12px 24px; 
+            padding: 10px 20px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
@@ -101,7 +95,7 @@
         .reset-btn { 
             background-color: #F39C12; 
             color: #FFFFFF; 
-            padding: 12px 24px; 
+            padding: 10px 20px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
@@ -124,7 +118,7 @@
             background-color: rgba(214, 48, 49, 0.1);
         }
         #total-wins { 
-            font-size: 18px; 
+            font-size: 16px; 
             margin-top: 20px; 
             color: #FFFFFF; 
             font-weight: bold; 
@@ -157,22 +151,29 @@
             50% { opacity: 0.3; transform: scale(1.02); }
             100% { opacity: 0.1; }
         }
+        .chart-image {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <h1>Professional Market Analysis Tool</h1>
-    <div id="timer">Loading Indian Time...</div>
+    
+    <div id="india-timer">Loading Indian Time...</div>
+    <div id="bangladesh-timer">Loading Bangladesh Time...</div>
     
     <label for="timezone-select">Select Time Zone:</label>
     <select id="timezone-select" onchange="updateTimes()">
-        <option value="Asia/Kolkata">IST (India/Bangladesh Standard)</option>
+        <option value="Asia/Kolkata">IST (India)</option>
+        <option value="Asia/Dhaka">BST (Bangladesh)</option>
         <option value="UTC">UTC (Universal Time)</option>
-        <option value="Asia/Karachi">PKT (Pakistan Standard)</option>
+        <option value="Asia/Karachi">PKT (Pakistan)</option>
         <option value="America/New_York">EST (New York)</option>
         <option value="Europe/London">GMT (London)</option>
         <option value="Asia/Tokyo">JST (Tokyo)</option>
     </select>
-    <div id="zone-timer">Loading Time...</div>
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
@@ -224,7 +225,7 @@
             <h3>Market Trend Visualization</h3>
             <div class="chart-container">
                 <div class="glitch-overlay"></div>
-                Visualizing Up and Down Movements
+                <img src="visual_illustration_9382601041919771699.png" alt="Candlestick Chart" class="chart-image">
             </div>
         </div>
     </div>
@@ -242,14 +243,13 @@
         function updateTimes() {
             const now = new Date();
             
-            const indianOptions = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const indianTime = new Intl.DateTimeFormat('en-IN', indianOptions).format(now);
-            document.getElementById('timer').innerText = 'Indian Time: ' + indianTime;
+            const indiaOptions = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const indiaTime = new Intl.DateTimeFormat('en-IN', indiaOptions).format(now);
+            document.getElementById('india-timer').innerText = 'Indian Time: ' + indiaTime;
             
-            const selectedZone = document.getElementById('timezone-select').value;
-            const zoneOptions = { timeZone: selectedZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const zoneTime = new Intl.DateTimeFormat('en-GB', zoneOptions).format(now);
-            document.getElementById('zone-timer').innerText = selectedZone + ' Time: ' + zoneTime;
+            const bangladeshOptions = { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const bangladeshTime = new Intl.DateTimeFormat('en-BD', bangladeshOptions).format(now);
+            document.getElementById('bangladesh-timer').innerText = 'Bangladesh Time: ' + bangladeshTime;
         }
 
         setInterval(updateTimes, 1000);
