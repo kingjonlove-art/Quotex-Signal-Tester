@@ -3,14 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market Analysis Tool</title>
+    <title>Professional Market Analysis Tool</title>
     <style>
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             text-align: center; 
-            margin-top: 30px; 
-            background-color: #121212; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #0A0A0C; 
             color: #FFFFFF; 
+        }
+        h1 { color: #6C5CE7; }
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .panel {
+            background-color: #16161A;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 350px;
         }
         .btn { 
             padding: 15px 30px; 
@@ -20,7 +36,9 @@
             border-radius: 5px; 
             color: #FFFFFF; 
             background-color: #6C5CE7; 
+            transition: background-color 0.3s;
         }
+        .btn:hover { background-color: #5F27CD; }
         .btn:disabled { 
             background-color: #888888; 
             cursor: not-allowed; 
@@ -28,24 +46,31 @@
         #timer { 
             font-size: 20px; 
             font-weight: bold; 
-            margin-bottom: 15px; 
+            margin-bottom: 5px; 
             color: #E0E0E0; 
+        }
+        #utc-timer { 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            color: #B2BEC3; 
         }
         #pair-select { 
             font-size: 18px; 
-            padding: 8px; 
-            margin-bottom: 15px; 
+            padding: 10px; 
+            margin-bottom: 20px; 
             background-color: #2D2D2D; 
             color: #FFFFFF; 
             border: 1px solid #444444; 
+            border-radius: 5px;
         }
         #signal-display { 
-            font-size: 24px; 
+            font-size: 28px; 
             font-weight: bold; 
             margin-top: 20px; 
         }
         #price-display { 
-            font-size: 18px; 
+            font-size: 20px; 
             margin-top: 10px; 
             color: #74B9FF; 
             font-weight: bold; 
@@ -58,29 +83,29 @@
         .win-btn { 
             background-color: #00B894; 
             color: #FFFFFF; 
-            padding: 10px 20px; 
+            padding: 12px 24px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
-            border-radius: 3px;
+            border-radius: 5px;
         }
         .loss-btn { 
             background-color: #D63031; 
             color: #FFFFFF; 
-            padding: 10px 20px; 
+            padding: 12px 24px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
-            border-radius: 3px;
+            border-radius: 5px;
         }
         .reset-btn { 
             background-color: #F39C12; 
             color: #FFFFFF; 
-            padding: 10px 20px; 
+            padding: 12px 24px; 
             border: none; 
             margin-top: 10px; 
             cursor: pointer; 
-            border-radius: 3px;
+            border-radius: 5px;
         }
         #risk-mgmt { 
             font-size: 16px; 
@@ -93,6 +118,10 @@
             margin-top: 10px; 
             color: #FFC0CB; 
             font-weight: bold; 
+            border: 1px solid #D63031;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(214, 48, 49, 0.1);
         }
         #total-wins { 
             font-size: 18px; 
@@ -100,11 +129,24 @@
             color: #FFFFFF; 
             font-weight: bold; 
         }
+        .chart-placeholder {
+            border: 2px dashed #444444;
+            border-radius: 10px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #B2BEC3;
+            font-size: 18px;
+            background-color: #1E1E24;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Market Analysis Tool</h1>
+    <h1>Professional Market Analysis Tool</h1>
     <div id="timer">Loading Indian Time...</div>
+    <div id="utc-timer">Loading UTC Time...</div>
     
     <label for="pair-select">Select Trade Pair:</label>
     <select id="pair-select">
@@ -139,19 +181,26 @@
     
     <button id="analyze-btn" class="btn" onclick="startAnalysisTimer()">ANALYZE 1M SIGNAL</button>
     
-    <div id="price-display">Live Price: --</div>
-    <div id="signal-display"></div>
-    
-    <div>
-        <button class="win-btn" onclick="recordTrade('WIN')">Mark as WIN</button>
-        <button class="loss-btn" onclick="recordTrade('LOSS')">Mark as LOSS</button>
-        <br>
-        <button class="reset-btn" onclick="resetStats()">Reset Stats</button>
+    <div class="dashboard-container">
+        <div class="panel">
+            <div id="price-display">Live Price: --</div>
+            <div id="signal-display"></div>
+            <div>
+                <button class="win-btn" onclick="recordTrade('WIN')">Mark as WIN</button>
+                <button class="loss-btn" onclick="recordTrade('LOSS')">Mark as LOSS</button>
+                <br>
+                <button class="reset-btn" onclick="resetStats()">Reset Stats</button>
+            </div>
+            <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
+            <div id="total-wins">Total Wins out of 30 Trades: 0</div>
+        </div>
+        <div class="panel">
+            <h3>Market Trend Visualization</h3>
+            <div class="chart-placeholder">
+                Chart data will be displayed here
+            </div>
+        </div>
     </div>
-    
-    <div id="stats-display">Trades: 0 | Wins: 0 | Win Rate: 0%</div>
-    
-    <div id="total-wins">Total Wins out of 30 Trades: 0</div>
     
     <div id="risk-mgmt">Risk Management: Always use 1% to 3% of your capital per trade.</div>
     <div id="demo-warning">Warning: If Live Price shows Demo Mode Active, trading is prohibited.</div>
@@ -163,15 +212,20 @@
 
         const API_KEY = 'YOUR_ALPHA_VANTAGE_API_KEY';
 
-        function updateIndianTime() {
+        function updateTimes() {
             const now = new Date();
-            const options = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-            const indianTime = new Intl.DateTimeFormat('en-IN', options).format(now);
+            
+            const indianOptions = { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const indianTime = new Intl.DateTimeFormat('en-IN', indianOptions).format(now);
             document.getElementById('timer').innerText = 'Indian Time: ' + indianTime;
+            
+            const utcOptions = { timeZone: 'UTC', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const utcTime = new Intl.DateTimeFormat('en-GB', utcOptions).format(now);
+            document.getElementById('utc-timer').innerText = 'UTC Time: ' + utcTime;
         }
 
-        setInterval(updateIndianTime, 1000);
-        updateIndianTime();
+        setInterval(updateTimes, 1000);
+        updateTimes();
 
         function startAnalysisTimer() {
             const btn = document.getElementById('analyze-btn');
