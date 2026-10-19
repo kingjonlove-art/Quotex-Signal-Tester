@@ -7,10 +7,12 @@ const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 
 app.use(express.json());
 
+// হোম রাউট (টেস্ট করার জন্য)
 app.get('/', (req, res) => {
   res.send('Trading Tool Server is Running Successfully!');
 });
 
+// Alpha Vantage থেকে লাইভ ডেটা আনার রাউট
 app.get('/api/stock/:symbol', async (req, res) => {
   const symbol = req.params.symbol;
 
